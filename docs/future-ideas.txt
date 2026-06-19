@@ -1,0 +1,9 @@
+Future ideas
+
+- G-Link can become a companion and social tool for student clubs
+
+- Automatically generate Zoom / Google Meet link when creating a meeting
+
+- Send emails from inside the app
+
+- Search and ping other clubs for collaboration

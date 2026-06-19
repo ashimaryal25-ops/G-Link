@@ -1,71 +1,74 @@
 # Product Brief
 
-## Positioning
+## Product
 
-G-Link is an operating system for student organization governance. It replaces scattered workflows across group chats, docs, spreadsheets, email threads, and task boards with one structured workspace.
+G-Link is a connected operations workspace for student club executive boards.
 
-The first customer is an individual club E-board. The broader opportunity is campus-wide adoption through cross-club collaboration, standardized funding compliance, and long-term club archives that survive officer turnover.
+## Problem
 
-## Primary Users
+Club work is usually split across:
 
-- **President:** Needs operational visibility, owner accountability, and event readiness.
-- **Secretary:** Needs fast meeting documentation that becomes useful records.
-- **Treasurer:** Needs clean budget tracking, receipt evidence, proposal preparation, and audit readiness.
-- **Event Chair:** Needs tasks, vendors, deadlines, and shared logistics for one event.
-- **Advisor or Senate Reviewer:** Needs reliable history and funding compliance evidence.
-- **Incoming Officer:** Needs to understand how the club used to run, what events worked, what budgets were realistic, and what planning mistakes to avoid.
+- group chats
+- shared documents
+- spreadsheets
+- email
+- individual memory
 
-## Core Jobs To Be Done
+That makes ownership unclear and officer transitions difficult.
 
-1. Capture a meeting once and turn it into reusable records.
-2. Convert decisions and commitments into assigned tasks.
-3. Tie tasks and spending to events.
-4. Prepare funding requests with lower rejection risk.
-5. Keep receipts and approvals attached to the correct budget lines.
-6. Produce audit-ready reports without reconstructing the semester manually.
-7. Let two or more clubs coordinate on one event while preserving each club's own workspace.
-8. Preserve institutional memory so new exec boards can learn from prior officers instead of starting from zero.
+## Core User
 
-## Non-Goals
+A student executive who needs to answer:
 
-- General campus social feed.
-- Open-ended chat community.
-- Generic project management clone.
-- Personal budgeting app.
-- Standalone AI chatbot without structured records.
+- What is happening in this club?
+- What do I personally need to do?
+- What needs to happen for this event?
+- What was decided in the meeting?
+- Who owns the follow-up?
+
+## Current Product Loop
+
+```text
+Student Home
+  -> Club Workspace
+    -> Event
+      -> Meeting
+        -> Assigned Task
+```
+
+## Current MVP
+
+- multi-club Student Home
+- club roles and executive board display
+- event creation, detail, editing, and budget totals
+- meeting creation, notes, conclusions, and event linking
+- personal and club task views
+- task assignment, editing, status, and record links
+- browser persistence for prototype testing
 
 ## Product Principle
 
-Every important object should connect to the rest of the club's record:
+Records should connect instead of becoming isolated entries.
 
-- A task should know which meeting created it.
-- A receipt should know which event and budget line it supports.
-- A funding request should know which bylaw rules it was checked against.
-- An annual report should be generated from live operational history, not written from scratch.
-- A new officer should be able to trace how a previous board planned, funded, staffed, and completed an event.
+Examples:
 
-## MVP Scope
+- a task can reference the meeting that created it
+- a meeting can reference the event it supports
+- an event shows its related meetings and tasks
+- a student sees assigned work across clubs
 
-The first usable version should support one club workspace with:
+## Not Built Yet
 
-- Club profile and member roles.
-- Multi-club student home dashboard.
-- Events.
-- Meeting minutes editor.
-- Manual task creation from meetings.
-- Task board.
-- Task comments and status updates.
-- Budget ledger tied to events.
-- Receipt notes or attachment placeholders.
-- Basic audit checklist per event.
-- Searchable archive of past meetings, completed events, budgets, task comments, and officer handoff notes.
+- real authentication
+- shared database
+- production permissions
+- archive and officer handoff
+- notifications
+- calendar / Zoom integration
+- email integration
+- cross-club collaboration
+- AI assistance
 
-The second version should add:
+## Success Test
 
-- AI minutes formatter.
-- AI task extraction from minutes.
-- Lightweight email/announcement drafting.
-- Proposal reviewer against configurable rules.
-- Cross-club event collaboration.
-- Notifications.
-- Annual report generation.
+The first real validation is not feature count. It is whether a club executive board can use G-Link after a meeting and clearly understand what happens next.

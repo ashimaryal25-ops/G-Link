@@ -1,62 +1,166 @@
 # G-Link
 
-G-Link is a vertical SaaS for student organizations. Its purpose is to become the single source of truth for a club's documentation, tasks, events, budgets, receipts, compliance history, and institutional memory.
+**A connected operations workspace for student club executive boards.**
 
-The product is not a social network. It is a logistics and governance system for club officers who need to run meetings, assign work, track spending, prepare funding requests, and survive audits without rebuilding the same information in five separate tools.
+G-Link brings club events, meetings, tasks, roles, and simple event budgets into one workflow. The prototype focuses on a common student-organization problem: decisions happen in meetings, follow-up work gets scattered across chats and documents, and the next executive board inherits very little useful context.
 
-## Real Objective
+> **Current status:** functional frontend MVP. Data is stored in browser `localStorage`; real authentication and database persistence are planned next.
 
-Doing the work should automatically handle the bureaucracy.
+![G-Link club workspace](public/screenshots/club-workspace.png)
 
-When an officer takes meeting notes, G-Link should turn those notes into institutional minutes, extract action items, connect those tasks to events, and keep the club's operational record current. When money is requested or spent, G-Link should tie the budget line to an event, receipt, task, and approval trail so the semester-end report is already mostly complete.
+<details>
+<summary>Student Home</summary>
 
-Because student organizations change leadership every semester or year, G-Link should also preserve how the club operated before. New exec boards should be able to review prior meetings, recurring events, budgets, task timelines, vendors, mistakes, and final reports so they do not have to relearn the club from scratch.
+![G-Link Student Home](public/screenshots/student-home.png)
 
-## Product Pillars
+</details>
 
-1. **Documentation: The Secretary's Slate**
-   - Meeting minutes workspace.
-   - Raw notes become formatted institutional records.
-   - Decisions, motions, attendees, events, budget discussions, and action items are extracted into structured data.
+## Why I Built It
 
-2. **Tasks: The Operations Engine**
-   - Shared board for E-board work.
-   - Tasks can be created manually or automatically extracted from minutes.
-   - Every task can belong to a club, event, meeting, owner, and due date.
+Student clubs often coordinate through a mixture of group chats, shared documents, spreadsheets, email, and memory. Each tool works independently, but the workflow between them is weak.
 
-3. **Budget: The Financial Ledger**
-   - Club funds are tracked as event-linked ledger entries, not disconnected spreadsheet rows.
-   - Requests, approvals, receipts, reimbursements, and spending categories share one history.
-   - Every dollar should be traceable to a purpose, event, and supporting document.
+G-Link tests a more connected model:
 
-4. **Logic Gate: Proposal Review and Audit**
-   - AI reviews proposed spending against Student Senate bylaws and local funding rules.
-   - AI flags likely rejection risks before submission.
-   - Audit checks compare minutes, tasks, budget entries, receipts, and event records for missing evidence.
+```text
+Student Home -> Club Workspace -> Event -> Meeting -> Assigned Task
+```
 
-5. **Connection Layer**
-   - Clubs can collaborate on a specific shared event without merging all club data.
-   - Co-sponsored events have shared tasks, shared budget visibility, and clear ownership.
-   - Notifications are high-signal because they come from real operational assignments.
+A task can retain its club, event, source meeting, assignee, due date, and status. That connection is the core product idea.
 
-6. **Institutional Memory**
-   - Completed meetings, events, budgets, tasks, comments, receipts, and reports remain searchable archives.
-   - New officers can review how previous boards planned events, spent money, contacted partners, and handled problems.
-   - Recurring events can be cloned from prior years with their old task lists, budgets, and notes as a starting point.
+## Working Features
 
-## Suggested Stack
+- Demo sign-in and cross-club Student Home
+- Club-specific workspaces with executive roles
+- Club overview with active events, recent tasks, and upcoming meetings
+- Event creation and editing
+- Event lead, status, description, planned budget, and actual budget
+- Meeting scheduling followed by in-meeting notes and conclusions
+- Tasks linked to a club, event, meeting, assignee, and due date
+- Personal task and full club task views
+- Task editing, status changes, and removal
+- Connected navigation between events, meetings, and tasks
+- Responsive desktop/mobile layout
+- Browser persistence and resettable demo data
+- Basic role checks for record creation
 
-- **Frontend:** React PWA with responsive desktop/mobile workflows.
-- **Backend:** Supabase or another PostgreSQL-backed service.
-- **Database:** Relational PostgreSQL model with clubs, events, meetings, tasks, budget entries, receipts, documents, memberships, and collaborations.
-- **AI Layer:** Parser and linter, not just chat.
-- **Deployment:** Vercel for the web app, Supabase for database/auth/storage.
+## Product Walkthrough
 
-## Repo Map
+1. Sign in with the prefilled demo profile.
+2. Choose a club from Student Home.
+3. Create an event, meeting, or task from the club workspace.
+4. Link a meeting to an event.
+5. Record notes and conclusions during the meeting.
+6. Assign follow-up tasks to club members.
+7. Track the same task from Student Home, the club task view, its event, or its source meeting.
 
-- [docs/product-brief.md](docs/product-brief.md): Product definition and user outcomes.
-- [docs/data-model.md](docs/data-model.md): Core relational model.
-- [docs/ai-protocol.md](docs/ai-protocol.md): AI parser, reviewer, and audit responsibilities.
-- [docs/institutional-memory.md](docs/institutional-memory.md): Archive and officer-transition logic.
-- [docs/mvp-plan.md](docs/mvp-plan.md): Recommended build sequence.
-- [docs/user-flows.md](docs/user-flows.md): Primary workflows for club officers.
+## Architecture
+
+```mermaid
+flowchart TD
+    Page[Next.js App Router page] --> App[GLinkMvpApp]
+    App --> Home[Student Home]
+    App --> Club[Club Workspace]
+    Club --> Overview[Overview Panel]
+    Club --> Events[Events Panel]
+    Club --> Meetings[Meetings Panel]
+    Club --> Tasks[Tasks Panel]
+    Club --> Create[Create Panel]
+    App --> State[React state]
+    State --> Storage[Browser localStorage]
+```
+
+`GLinkMvpApp` owns the prototype data and actions. Feature components receive data and callbacks through typed props. This keeps the product flow visible while leaving a clear replacement point for Supabase.
+
+See [docs/architecture.md](docs/architecture.md) for the file-level map.
+
+## Tech Stack
+
+- Next.js 16 App Router
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- shadcn/ui primitives and Radix UI
+- Lucide icons
+- `localStorage` prototype persistence
+- Supabase client prepared for the next backend phase
+
+## Engineering Decisions
+
+- **Manual workflow first:** meeting notes and task creation work without relying on AI.
+- **Events as the operational center:** meetings, tasks, and budget totals connect back to an event.
+- **Explicit edit modes:** records are read-only until the user chooses to edit, reducing accidental changes.
+- **Simple budgets first:** planned and actual totals validate the workflow without prematurely building accounting software.
+- **Feature-based component split:** UI panels are separated by product responsibility instead of remaining in one large component.
+- **Honest prototype boundary:** browser storage supports product testing; it is not presented as production persistence.
+
+More detail: [docs/case-study.md](docs/case-study.md) and [docs/technical-decisions.md](docs/technical-decisions.md).
+
+## Run Locally
+
+Requirements:
+
+- Node.js 20.9 or newer
+- npm
+
+```bash
+git clone https://github.com/ashimaryal25-ops/G-Link.git
+cd G-Link
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+The demo login is prefilled. No Supabase credentials are required for the current frontend prototype.
+
+## Quality Checks
+
+```bash
+npm run lint
+npx tsc --noEmit
+npm run build
+```
+
+## Project Structure
+
+```text
+src/
+|-- app/                         # Next.js route, layout, global styles
+|-- components/
+|   |-- g-link-mvp-app.tsx      # App state, actions, navigation
+|   `-- ui/                     # Reusable UI primitives
+|-- features/g-link/
+|   |-- student-home.tsx
+|   |-- club-workspace.tsx
+|   |-- events-panel.tsx
+|   |-- meetings-panel.tsx
+|   |-- tasks-panel.tsx
+|   |-- create-panel.tsx
+|   |-- types.ts
+|   |-- demo-data.ts
+|   `-- helpers.ts
+`-- lib/                        # Shared utilities and Supabase client
+```
+
+## Next Milestones
+
+1. Replace demo login with Supabase Auth.
+2. Move clubs, memberships, events, meetings, and tasks to PostgreSQL.
+3. Add row-level security and server-validated role permissions.
+4. Pilot the workflow with one or two student executive boards.
+5. Add archive/handoff features after the core workflow is validated.
+
+Longer-term ideas such as calendar links, email integration, and cross-club collaboration are recorded separately in [docs/future-ideas.txt](docs/future-ideas.txt).
+
+## Documentation
+
+- [Product brief](docs/product-brief.md)
+- [Technical case study](docs/case-study.md)
+- [Architecture map](docs/architecture.md)
+- [MVP plan](docs/mvp-plan.md)
+- [Data model](docs/data-model.md)
+- [Engineering log](docs/engineering-log.md)
+
+## Author
+
+Built by [Ashim Aryal](https://github.com/ashimaryal25-ops), a Computer Science and Mathematical Economics student exploring product engineering, applied AI, and tools for student organizations.

@@ -1,6 +1,8 @@
 # Data Model
 
-This model assumes PostgreSQL/Supabase. Names are intentionally plain so implementation can map them directly to tables.
+> **Status:** backend design document. The current prototype still uses browser `localStorage`.
+
+This proposed model assumes PostgreSQL/Supabase. Names are intentionally plain so implementation can map them directly to tables.
 
 ## Ownership Hierarchy
 
@@ -11,8 +13,6 @@ club
   -> event
     -> meeting
     -> task
-    -> budget_entry
-      -> receipt
     -> collaboration
 ```
 
@@ -25,7 +25,6 @@ Represents a student organization.
 - `id`
 - `name`
 - `slug`
-- `campus_id`
 - `description`
 - `created_at`
 
@@ -76,6 +75,8 @@ Represents an event, initiative, or program that tasks and money can attach to.
 - `ends_at`
 - `location`
 - `status`: `draft`, `planned`, `active`, `completed`, `cancelled`
+- `planned_budget_cents`
+- `actual_budget_cents`
 - `created_by`
 - `created_at`
 
@@ -90,21 +91,11 @@ Represents a meeting record.
 - `title`
 - `meeting_at`
 - `raw_notes`
-- `formatted_minutes`
+- `decisions`
 - `status`: `draft`, `reviewed`, `approved`
 - `created_by`
 - `approved_by` nullable
 - `created_at`
-
-### meeting_attendees
-
-Tracks attendance and institutional recordkeeping.
-
-- `id`
-- `meeting_id`
-- `user_id` nullable
-- `display_name`
-- `attendance_status`: `present`, `absent`, `guest`
 
 ### tasks
 
@@ -125,7 +116,7 @@ Represents operational work.
 - `created_by`
 - `created_at`
 
-### budget_entries
+### budget_entries later
 
 Represents budget requests, allocations, expenses, reimbursements, and adjustments.
 
@@ -158,7 +149,7 @@ Stores operational updates on tasks. These comments become useful archive materi
 - `body`
 - `created_at`
 
-### receipts
+### receipts later
 
 Stores receipt metadata and links uploaded files to budget entries.
 

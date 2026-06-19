@@ -4,6 +4,7 @@
 
 - No AI yet
 - Build normal event, meeting, and task flows first
+- Meeting MVP uses raw notes and decisions / conclusions
 - AI can come after records make sense
 
 ## Event Centered
